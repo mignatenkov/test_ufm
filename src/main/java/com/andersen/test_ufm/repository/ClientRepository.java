@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import java.net.UnknownHostException;
 import java.util.List;
 
+
+// TODO Покрыть тестами и проверить работоспособность
 @Repository
 public class ClientRepository {
 

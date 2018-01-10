@@ -1,5 +1,6 @@
-controls:
-  numthreads: 20
+application:
+  config:
+    numthreads: 20
 
 mongodb:
   database.name: test
