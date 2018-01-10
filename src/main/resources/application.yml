@@ -1,0 +1,11 @@
+controls:
+  numthreads: 20
+
+mongodb:
+  database.name: test
+  collection.name: clients
+
+logging:
+  level:
+    ROOT: INFO
+    com.andersen: DEBUG
