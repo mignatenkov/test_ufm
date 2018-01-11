@@ -1,7 +1,7 @@
 package com.andersen.test_ufm;
 
 import com.andersen.test_ufm.queue.AkkaIOUtil;
-import com.andersen.test_ufm.service.ProcessService;
+import com.andersen.test_ufm.service.IProcessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 public class Application implements CommandLineRunner {
 
     @Autowired
-    private ProcessService processService;
+    private IProcessService multithreadSpentCalc;
 
     @Autowired
     private AkkaIOUtil akkaIOUtil;
