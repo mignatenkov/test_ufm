@@ -9,14 +9,14 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class DroolsSpentCalc implements IProcessService {
+public class DroolsSpentCalc /*implements IProcessService*/ {
 
     @PostConstruct
     public void init() {
 
     }
 
-    @Override
+    //@Override
     public Long process(List<JSONObject> listSpent) {
 
         return 20000l;

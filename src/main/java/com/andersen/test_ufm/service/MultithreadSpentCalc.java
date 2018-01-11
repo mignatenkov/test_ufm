@@ -42,9 +42,9 @@ public class MultithreadSpentCalc implements IProcessService {
                 retVal += result.get();
             }
         } catch (InterruptedException e) {
-            log.error(e.getLocalizedMessage() + " " + e.toString());
+            //log.error(e.getLocalizedMessage() + " " + e.toString());
         } catch (ExecutionException e) {
-            log.error(e.getLocalizedMessage() + " " + e.toString());
+            //log.error(e.getLocalizedMessage() + " " + e.toString());
         }
 
         return retVal;
