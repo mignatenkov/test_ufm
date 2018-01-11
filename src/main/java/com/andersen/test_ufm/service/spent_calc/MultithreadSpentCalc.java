@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.service;
+package com.andersen.test_ufm.service.spent_calc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 @Slf4j
 @Service
 @Scope("prototype")
-public class MultithreadSpentCalc implements IProcessService {
+public class MultithreadSpentCalc implements ISpentCalc {
 
     @Value("${application.config.numthreads:20}")
     private Integer numthreads;

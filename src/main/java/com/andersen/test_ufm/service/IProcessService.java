@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IProcessService {
 
-    Long process(List<JSONObject> listSpent);
+    JSONObject process(JSONObject inputData);
 
 }
