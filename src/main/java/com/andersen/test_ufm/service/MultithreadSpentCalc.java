@@ -3,6 +3,7 @@ package com.andersen.test_ufm.service;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +14,8 @@ import java.util.concurrent.*;
 //TODO Покрыть тестами и проверить ф-ции
 @Slf4j
 @Service
-public class ProcessService {
+@Scope("prototype")
+public class MultithreadSpentCalc implements IProcessService {
 
     @Value("${application.config.numthreads:20}")
     private Integer numthreads;
@@ -25,7 +27,8 @@ public class ProcessService {
         this.executorService = Executors.newFixedThreadPool(numthreads);
     }
 
-    public Long countSpentByClient(List<JSONObject> listSpent) {
+    @Override
+    public Long process(List<JSONObject> listSpent) {
         Integer shardSize = listSpent.size() / 20;
         List<Callable<Long>> tasks = new ArrayList<>();
         Long retVal = new Long(0l);

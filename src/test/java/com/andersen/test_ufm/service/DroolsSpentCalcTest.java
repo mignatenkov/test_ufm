@@ -14,18 +14,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Application.class})
-public class ProcessServiceTest {
+public class DroolsSpentCalcTest {
 
     @Autowired
-    private ProcessService processService;
+    private IProcessService droolsSpentCalc;
 
     @Test
-    public void testCountSpentByClient() throws Exception {
+    public void testProcess() throws Exception {
         List<JSONObject> inputData = new ArrayList<>();
         int numTestElms = 20000;
         for (int i = 0; i < numTestElms; i++) {
@@ -35,10 +33,10 @@ public class ProcessServiceTest {
             inputData.add(newElm);
         }
         log.info("START TIME: " + LocalDateTime.now().toString());
-        Long res = processService.countSpentByClient(inputData);
+        Long res = droolsSpentCalc.process(inputData);
         log.info("FINISH TIME: " + LocalDateTime.now().toString());
 
         Assert.assertEquals(20000l, res.longValue());
-
     }
+
 }
