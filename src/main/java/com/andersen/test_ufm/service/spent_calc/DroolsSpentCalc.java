@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.service;
+package com.andersen.test_ufm.service.spent_calc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class DroolsSpentCalc /*implements IProcessService*/ {
+public class DroolsSpentCalc implements ISpentCalc {
 
     @PostConstruct
     public void init() {

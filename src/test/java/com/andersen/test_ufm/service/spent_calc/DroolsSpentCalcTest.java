@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.service;
+package com.andersen.test_ufm.service.spent_calc;
 
 import com.andersen.test_ufm.Application;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.List;
 public class DroolsSpentCalcTest {
 
     @Autowired
-    private IProcessService droolsSpentCalc;
+    private ISpentCalc droolsSpentCalc;
 
     @Test
     public void testProcess() throws Exception {

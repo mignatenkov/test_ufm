@@ -1,10 +1,13 @@
 package com.andersen.test_ufm.repository;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -12,32 +15,22 @@ import java.util.List;
 // TODO Покрыть тестами и проверить работоспособность
 @Repository
 public class ClientRepository {
+    private final DBCollection mongoCollection;
 
-    @Value("${mongodb.database.name:test}")
-    private String mongodbDatabaseName;
+    @Autowired
+    public ClientRepository(@Value("${mongodb.database.name:test}") String mongodbDatabaseName,
+                            @Value("${mongodb.collection.name:clients}") String mongodbCollectionName,
+                            @Value("${mongodb.host:localhost}") String localhost,
+                            @Value("${mongodb.port:27017}") int port) throws UnknownHostException {
+        this(new MongoClient(localhost, port).getDB(mongodbDatabaseName)
+                .getCollection(mongodbCollectionName));
+    }
 
-    @Value("${mongodb.collection.name:clients}")
-    private String mongodbCollectionName;
-
-    private MongoClient mongo;
-    private DB mongoDB;
-    private DBCollection mongoCollection = null;
-
-    @PostConstruct
-    public void initConnection() {
-        try {
-            mongo = new MongoClient("localhost", 27017);
-            mongoDB = mongo.getDB(mongodbDatabaseName);
-            mongoCollection = mongoDB.getCollection(mongodbCollectionName);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+    public ClientRepository(DBCollection mongoCollection) {
+        this.mongoCollection = mongoCollection;
     }
 
     public List getAllClients() {
-        if (mongoCollection == null) {
-            this.initConnection();
-        }
         return mongoCollection.find().toArray();
     }
 
@@ -46,18 +39,11 @@ public class ClientRepository {
         newUser.put("clientId", clientId);
         newUser.put("spentTotal", spentTotal);
         newUser.put("isBig", isBig);
-        if (mongoCollection == null) {
-            this.initConnection();
-        }
         mongoCollection.save(newUser);
         return mongoCollection.findOne(newUser);
     }
 
     public DBObject findClientByClientId(String clientId) {
-        if (mongoCollection == null) {
-            this.initConnection();
-        }
         return mongoCollection.findOne(new BasicDBObject("clientId", clientId));
     }
-
 }

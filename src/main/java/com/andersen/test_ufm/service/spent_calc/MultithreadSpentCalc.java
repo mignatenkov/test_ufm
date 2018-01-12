@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.service;
+package com.andersen.test_ufm.service.spent_calc;
 
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -20,7 +20,7 @@ import java.util.concurrent.*;
 @Slf4j
 @Service
 @Scope("prototype")
-public class MultithreadSpentCalc implements IProcessService {
+public class MultithreadSpentCalc implements ISpentCalc {
     private static final Logger LOGGER = LoggerFactory.getLogger(MultithreadSpentCalc.class);
 
     @Value("${application.config.numthreads:20}")
