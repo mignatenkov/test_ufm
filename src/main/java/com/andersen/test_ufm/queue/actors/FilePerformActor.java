@@ -32,9 +32,9 @@ public class FilePerformActor extends AbstractActor {
     IProcessService processService;
 
     @Autowired
-    FileUtil fileUtil;
+    ActorUtil actorUtil;
 
-    private JSONObject outputData;
+    //private JSONObject outputData;
 
     public FilePerformActor() {
     }
@@ -59,12 +59,31 @@ public class FilePerformActor extends AbstractActor {
         super.postStop();
     }
 
+    /*
+     .match(Integer.class, i -> {
+        getSender().tell(i + magicNumber, getSelf());
+      })
+     */
+
     @Override
     public Receive createReceive() {
         return receiveBuilder().match(File.class, this::process).build();
+
+        //return receiveBuilder().match(File.class, file -> {
+        //    new ActorUtil().process(file);
+        //}).build();
+
+        //return receiveBuilder().match(File.class, file -> {
+        //    ActorUtil actorUtil = new ActorUtil();
+        //    actorUtil.process(file);
+        //}).build();
     }
 
+    private void process(File inputFile) {
+        actorUtil.process(inputFile);
+    }
 
+/*
     private void process(File inputFile) {
         LOGGER.info("Start processing file ...");
         JSONObject inputData = parseFileToJSON(inputFile);
@@ -77,8 +96,9 @@ public class FilePerformActor extends AbstractActor {
         fileUtil.deleteFile(inputFile);
         fileUtil.createFile(inputFile.getName(),outputData);
     }
+*/
 
-
+/*
     private JSONObject parseFileToJSON(File inputFile) {
         String content = null;
         JSONObject json = null;
@@ -98,4 +118,5 @@ public class FilePerformActor extends AbstractActor {
 
         return json;
     }
+*/
 }
