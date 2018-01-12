@@ -20,7 +20,7 @@ public class RepositoryTest {
     private DBCollection dbCollection = Mockito.mock(DBCollection.class);
     private ClientRepository repository = new ClientRepository(dbCollection);
 
-//    @Test
+    @Test
     public void shouldGetAllClients() {
         DBCursor cursor = Mockito.mock(DBCursor.class);
 
@@ -37,7 +37,7 @@ public class RepositoryTest {
         assertTrue(clients.size() == 1);
     }
 
-//    @Test
+    @Test
     public void shouldCreateClient(){
         WriteResult result = Mockito.mock(WriteResult.class);
 
@@ -52,7 +52,7 @@ public class RepositoryTest {
         assertNotNull(test);
     }
 
-//    @Test
+    @Test
     public void shouldFindClientById(){
         DBObject object = Mockito.mock(DBObject.class);
 

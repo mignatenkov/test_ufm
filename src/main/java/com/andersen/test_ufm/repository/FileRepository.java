@@ -1,8 +1,8 @@
 package com.andersen.test_ufm.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.util.Arrays;
@@ -11,12 +11,15 @@ import java.util.List;
 /**
  * Класс реализующией методы доступа к данным
  */
-@Component
-public class FileDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileDao.class);
+@Slf4j
+@Repository
+public class FileRepository {
+
+    @Value("${application.inputFilesDir:input}")
+    private String inputFilesDir;
 
     public List<File> getListFile(){
-        File folder = new File("c:/Users/anduser/Other/input");
+        File folder = new File(inputFilesDir);
         File[] files = folder.listFiles();
         List<File> list= Arrays.asList(files);
 

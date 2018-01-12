@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.queue.extention;
+package com.andersen.test_ufm.akka.extention;
 
 import akka.actor.Actor;
 import akka.actor.IndirectActorProducer;

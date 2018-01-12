@@ -1,13 +1,9 @@
-package com.andersen.test_ufm.queue.actors;
+package com.andersen.test_ufm.akka.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import com.andersen.test_ufm.service.IProcessService;
-import com.andersen.test_ufm.utils.FileUtil;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -16,23 +12,21 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 
 /**
  * Класс-актор для обработки файла. Для каждого файла будет создаваться свой класс-актор
  */
+//TODO Cleanup the code of commented parts
+@Slf4j
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FilePerformActor extends AbstractActor {
-    private final LoggingAdapter LOGGER = Logging.getLogger(getContext().getSystem(), this);
 
     @Autowired
-    IProcessService processService;
+    private IProcessService processService;
 
     @Autowired
-    ActorUtil actorUtil;
+    private ActorUtil actorUtil;
 
     //private JSONObject outputData;
 
@@ -50,12 +44,12 @@ public class FilePerformActor extends AbstractActor {
     @Override
     public void preStart() throws Exception {
         super.preStart();
-        LOGGER.info("Custom actor started");
+        log.info("Custom actor started");
     }
 
     @Override
     public void postStop() throws Exception {
-        LOGGER.info("Custom actor stopped");
+        log.info("Custom actor stopped");
         super.postStop();
     }
 

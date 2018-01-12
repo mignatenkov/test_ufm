@@ -1,40 +1,42 @@
-package com.andersen.test_ufm.queue.actors;
+package com.andersen.test_ufm.akka.actors;
 
-import com.andersen.test_ufm.scheduler.Scheduler;
 import com.andersen.test_ufm.service.IProcessService;
 import com.andersen.test_ufm.utils.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+@Slf4j
 @Component
 public class ActorUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActorUtil.class);
 
     @Autowired
-    FileUtil fileUtil;
+    private FileUtil fileUtil;
 
     @Autowired
-    IProcessService processService;
+    private IProcessService processService;
+
+    @Value("${application.processedFilesDir:processed}")
+    private String processedFilesDir;
 
     private JSONObject outputData;
 
     public void process(File inputFile) {
-        LOGGER.info("Start processing file ...");
+        log.info("Start processing file ...");
         JSONObject inputData = parseFileToJSON(inputFile);
         if(inputData != null){
             outputData = processService.process(inputData);
-            LOGGER.info("Result processing file: " + outputData.toString());
+            log.info("Result processing file: " + outputData.toString());
         }
-        File dest = new File("c:/Users/anduser/Other/processed/"+inputFile.getName());
+        File dest = new File(processedFilesDir + "/" + inputFile.getName());
         fileUtil.copyFile(inputFile, dest);
         fileUtil.deleteFile(inputFile);
         fileUtil.createFile(inputFile.getName(),outputData);

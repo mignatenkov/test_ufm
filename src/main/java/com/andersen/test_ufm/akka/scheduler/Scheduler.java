@@ -1,14 +1,11 @@
-package com.andersen.test_ufm.scheduler;
+package com.andersen.test_ufm.akka.scheduler;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.routing.BalancingPool;
 import akka.routing.RoundRobinPool;
-import com.andersen.test_ufm.queue.extention.FileActorExtension;
-import com.andersen.test_ufm.repository.FileDao;
-import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.andersen.test_ufm.akka.extention.FileActorExtension;
+import com.andersen.test_ufm.repository.FileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,25 +18,24 @@ import java.util.List;
 /**
  * Класс-шедулер для обработки файлов через акторы
  */
+@Slf4j
 @Component
 public class Scheduler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
-    private final long DELAY = 10_000;
 
     @Autowired
-    ApplicationContext context;
+    private ApplicationContext context;
 
     @Autowired
-    FileDao dataProvider;
+    private FileRepository dataProvider;
 
     private ActorRef fileActor;
 
     private int countActors;
 
-    @Scheduled(fixedDelay = DELAY)
+    @Scheduled(fixedDelayString = "${application.scheduler.interval:10_000}")
     public void performRegularAction() {
         List<File> fileList = dataProvider.getListFile();
-        LOGGER.info("Count files in input folder: " + fileList.size());
+        log.info("Count files in input folder: " + fileList.size());
 
         for (File item : fileList) {
             fileActor.tell(item, ActorRef.noSender());
@@ -48,13 +44,15 @@ public class Scheduler {
 
     @PostConstruct
     public void postConstructMethod() {
-        LOGGER.info("Scheduler post construct");
+        log.debug("Scheduler post construct");
         ActorSystem system = context.getBean(ActorSystem.class);
         FileActorExtension fileActorExtension = context.getBean(FileActorExtension.class);
 
         countActors = dataProvider.getListFile().size();
-        LOGGER.info("Count actors: " + countActors);
+        log.debug("Count actors: " + countActors);
 
-        fileActor = system.actorOf(fileActorExtension.props("filePerformActor").withRouter(new RoundRobinPool(countActors)));
+        fileActor = system.actorOf(fileActorExtension
+                        .props("filePerformActor")
+                        .withRouter(new RoundRobinPool(countActors)));
     }
 }

@@ -1,7 +1,7 @@
-package com.andersen.test_ufm.queue;
+package com.andersen.test_ufm.akka;
 
 import akka.actor.ActorSystem;
-import com.andersen.test_ufm.queue.extention.FileActorExtension;
+import com.andersen.test_ufm.akka.extention.FileActorExtension;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.net.UnknownHostException;
 import java.util.List;
 
-
-// TODO Покрыть тестами и проверить работоспособность
 @Repository
 public class ClientRepository {
     private final DBCollection mongoCollection;

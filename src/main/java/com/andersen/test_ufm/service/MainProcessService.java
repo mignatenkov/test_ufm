@@ -8,8 +8,6 @@ import org.drools.core.RuleBase;
 import org.drools.core.RuleBaseFactory;
 import org.drools.core.WorkingMemory;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -41,9 +39,9 @@ public class MainProcessService implements IProcessService {
 
             outputData = client.toJSONObject();
         } catch (DroolsParserException e) {
-            //log.error(e.toString());
+            log.error(e.toString());
         } catch (IOException e) {
-            //log.error(e.toString());
+            log.error(e.toString());
         }
 
         return outputData;

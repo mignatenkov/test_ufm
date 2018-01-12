@@ -1,8 +1,6 @@
 package com.andersen.test_ufm;
 
-import com.andersen.test_ufm.service.IProcessService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,15 +14,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class Application implements CommandLineRunner {
 
-    @Autowired
-    private IProcessService multithreadSpentCalc;
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        // TODO start consuming from akka io
+        // Start some other actions here if needed
     }
 }
