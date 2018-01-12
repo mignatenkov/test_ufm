@@ -1,8 +1,6 @@
-application:
-  config:
-    numthreads: 20
-
 mongodb:
+  host: localhost
+  port: 27017
   database.name: test
   collection.name: clients
 
