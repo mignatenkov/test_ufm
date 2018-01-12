@@ -24,7 +24,7 @@ import java.util.List;
 @Component
 public class Scheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
-    private final long DELAY = 5000;
+    private final long DELAY = 10_000;
 
     @Autowired
     ApplicationContext context;

@@ -61,21 +61,21 @@ public class FilePerformActor extends AbstractActor {
 
 
     private void process(File inputFile) {
-        LOGGER.info("Start process message file ...");
+        LOGGER.info("Start processing file ...");
         JSONObject inputData = parseFileToJSON(inputFile);
         //if(inputData != null){
         //    processService.process(inputData);
         //}
         File dest = new File("c:/Users/anduser/Other/processed/"+inputFile.getName());
         fileUtil.copyFile(inputFile, dest);
-        //fileUtil.deleteFile(inputFile);
+        fileUtil.deleteFile(inputFile);
     }
 
     private JSONObject parseFileToJSON(File inputFile){
-        JSONParser parser = new JSONParser();
         JSONObject jsonObject = null;
 
         try {
+            JSONParser parser = new JSONParser();
             Object obj = parser.parse(new FileReader(inputFile));
             jsonObject = (JSONObject) obj;
         } catch (Exception e) {
