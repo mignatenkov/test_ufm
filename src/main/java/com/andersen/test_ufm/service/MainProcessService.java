@@ -8,12 +8,11 @@ import org.drools.core.RuleBase;
 import org.drools.core.RuleBaseFactory;
 import org.drools.core.WorkingMemory;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 
 @Slf4j
 @Service
@@ -21,6 +20,7 @@ public class MainProcessService implements IProcessService {
 
     @Override
     public JSONObject process(JSONObject inputData) {
+
         JSONObject outputData = new JSONObject();
 
         PackageBuilder packageBuilder = new PackageBuilder();
@@ -41,9 +41,9 @@ public class MainProcessService implements IProcessService {
 
             outputData = client.toJSONObject();
         } catch (DroolsParserException e) {
-            log.error(e.toString());
+            //log.error(e.toString());
         } catch (IOException e) {
-            log.error(e.toString());
+            //log.error(e.toString());
         }
 
         return outputData;

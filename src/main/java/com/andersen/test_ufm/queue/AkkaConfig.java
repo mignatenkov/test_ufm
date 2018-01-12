@@ -30,7 +30,7 @@ public class AkkaConfig {
     }
 
     /**
-     * Загрузка конфигурации из файла application.conf
+     * Загрузка конфигурации из файла
      */
     @Bean
     public Config akkaConfiguration() {

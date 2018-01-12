@@ -4,8 +4,8 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.routing.BalancingPool;
 import akka.routing.RoundRobinPool;
-import com.andersen.test_ufm.dao.FileDao;
 import com.andersen.test_ufm.queue.extention.FileActorExtension;
+import com.andersen.test_ufm.repository.FileDao;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.util.List;
 @Component
 public class Scheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
-    private final long DELAY = 5000;
+    private final long DELAY = 10_000;
 
     @Autowired
     ApplicationContext context;

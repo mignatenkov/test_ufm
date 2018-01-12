@@ -4,8 +4,10 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import com.andersen.test_ufm.service.IProcessService;
 import com.andersen.test_ufm.utils.FileUtil;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
@@ -13,8 +15,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +32,9 @@ public class FilePerformActor extends AbstractActor {
     IProcessService processService;
 
     @Autowired
-    FileUtil fileUtil;
+    ActorUtil actorUtil;
+
+    //private JSONObject outputData;
 
     public FilePerformActor() {
     }
@@ -54,34 +59,64 @@ public class FilePerformActor extends AbstractActor {
         super.postStop();
     }
 
+    /*
+     .match(Integer.class, i -> {
+        getSender().tell(i + magicNumber, getSelf());
+      })
+     */
+
     @Override
     public Receive createReceive() {
         return receiveBuilder().match(File.class, this::process).build();
-    }
 
+        //return receiveBuilder().match(File.class, file -> {
+        //    new ActorUtil().process(file);
+        //}).build();
+
+        //return receiveBuilder().match(File.class, file -> {
+        //    ActorUtil actorUtil = new ActorUtil();
+        //    actorUtil.process(file);
+        //}).build();
+    }
 
     private void process(File inputFile) {
-        LOGGER.info("Start process message file ...");
+        actorUtil.process(inputFile);
+    }
+
+/*
+    private void process(File inputFile) {
+        LOGGER.info("Start processing file ...");
         JSONObject inputData = parseFileToJSON(inputFile);
-        //if(inputData != null){
-        //    processService.process(inputData);
-        //}
+        if(inputData != null){
+            outputData = processService.process(inputData);
+            LOGGER.info("Result processing file: " + outputData.toString());
+        }
         File dest = new File("c:/Users/anduser/Other/processed/"+inputFile.getName());
         fileUtil.copyFile(inputFile, dest);
-        //fileUtil.deleteFile(inputFile);
+        fileUtil.deleteFile(inputFile);
+        fileUtil.createFile(inputFile.getName(),outputData);
     }
+*/
 
-    private JSONObject parseFileToJSON(File inputFile){
-        JSONParser parser = new JSONParser();
-        JSONObject jsonObject = null;
+/*
+    private JSONObject parseFileToJSON(File inputFile) {
+        String content = null;
+        JSONObject json = null;
 
         try {
-            Object obj = parser.parse(new FileReader(inputFile));
-            jsonObject = (JSONObject) obj;
-        } catch (Exception e) {
-            LOGGER.error("Error parsing the file: " + inputFile.getName());
+            content = new String(Files.readAllBytes(inputFile.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return jsonObject;
+        JSONParser parser = new JSONParser();
+        try {
+            json = (JSONObject) parser.parse(content);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return json;
     }
+*/
 }
