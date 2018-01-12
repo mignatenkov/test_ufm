@@ -35,9 +35,6 @@ public class MultithreadSpentCalc implements ISpentCalc {
 
     @Override
     public Long process(List<JSONObject> listSpent) {
-        int randomNum = ThreadLocalRandom.current().nextInt(1, 1000000);
-
-        LOGGER.info("START PROCESS IN SERVICE. Random ID = " + this.hashCode());
         Integer shardSize = listSpent.size() / 20;
         List<Callable<Long>> tasks = new ArrayList<>();
         Long retVal = new Long(0l);
@@ -68,20 +65,5 @@ public class MultithreadSpentCalc implements ISpentCalc {
                     .reduce((s1, s2) -> s1 + s2).orElse(0l);
             return retVal;
         };
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MultithreadSpentCalc)) return false;
-        MultithreadSpentCalc that = (MultithreadSpentCalc) o;
-        return Objects.equals(numthreads, that.numthreads) &&
-                Objects.equals(executorService, that.executorService);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(numthreads, executorService);
     }
 }

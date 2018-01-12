@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+/**
+ * Служебный класс для загрузки конфигурации Akka и создания систмы акторов
+ */
 @Configuration
 @Lazy
 public class AkkaConfig {

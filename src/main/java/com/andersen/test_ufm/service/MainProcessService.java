@@ -2,11 +2,13 @@ package com.andersen.test_ufm.service;
 
 import com.andersen.test_ufm.service.big_client_check.BigClientChecker;
 import com.andersen.test_ufm.service.spent_calc.ISpentCalc;
+import com.andersen.test_ufm.utils.FileUtil;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -15,6 +17,9 @@ public class MainProcessService implements IProcessService {
     @Autowired
     @Qualifier("multithreadSpentCalc")
     private ISpentCalc spentCalc;
+
+    @Autowired
+    FileUtil fileUtil;
 
     @Override
     public JSONObject process(JSONObject inputData) {
