@@ -17,6 +17,7 @@
         <drools.version>6.0.1.Final</drools.version>
         <slf4j-log4j.version>1.7.25</slf4j-log4j.version>
         <lombok.version>1.16.6</lombok.version>
+        <akka.version>2.5.4</akka.version>
     </properties>
 
     <parent>
@@ -79,6 +80,23 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Akka -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.12</artifactId>
+            <version>${akka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-testkit_2.12</artifactId>
+            <version>${akka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-slf4j_2.12</artifactId>
+            <version>${akka.version}</version>
+		</dependency>	
 
         <!-- Mockito -->
         <dependency>

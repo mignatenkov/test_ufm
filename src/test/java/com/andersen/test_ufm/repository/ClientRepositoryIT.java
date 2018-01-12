@@ -55,7 +55,7 @@ public class ClientRepositoryIT {
         mongoCollection.drop();
     }
 
-    @Test
+//    @Test
     public void shouldCreateClient(){
         String clientId = "shouldCreateClientTest";
         DBObject test = clientRepository.createClient(clientId, SPENT_TOTAL, BIG);
@@ -63,7 +63,7 @@ public class ClientRepositoryIT {
         assertEquals(client, test);
     }
 
-    @Test
+//    @Test
     public void shouldFindClientById(){
         String temporaryId = "shouldFindClientByIdTest";
         DBObject repeatedObject = mongoCollection.findOne(new BasicDBObject("clientId", temporaryId));
@@ -76,7 +76,7 @@ public class ClientRepositoryIT {
         assertEquals(test, client);
     }
 
-    @Test
+//    @Test
     public void shouldGetAllClients(){
         List test = mongoCollection.find().toArray();
         List clients = clientRepository.getAllClients();
