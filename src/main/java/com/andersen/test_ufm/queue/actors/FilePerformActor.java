@@ -11,6 +11,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.util.ArrayList;
+
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FilePerformActor extends AbstractActor {
@@ -41,13 +44,13 @@ public class FilePerformActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder().match(String.class, this::process).build();
+        return receiveBuilder().match(File.class, this::process).build();
     }
 
 
-    private void process(String messageFile) {
+    private void process(File file) {
         LOGGER.info("Start process message file ...");
-        processService.process(null);
+        processService.process(new ArrayList<>());
         LOGGER.info("Finish process message file");
     }
 }
