@@ -1,32 +1,51 @@
 package com.andersen.test_ufm.service;
 
-import com.andersen.test_ufm.service.big_client_check.BigClientChecker;
-import com.andersen.test_ufm.service.spent_calc.ISpentCalc;
-import com.andersen.test_ufm.utils.FileUtil;
+import com.andersen.test_ufm.domain.Client;
+import lombok.extern.slf4j.Slf4j;
+import org.drools.compiler.compiler.DroolsParserException;
+import org.drools.compiler.compiler.PackageBuilder;
+import org.drools.core.RuleBase;
+import org.drools.core.RuleBaseFactory;
+import org.drools.core.WorkingMemory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
+@Slf4j
 @Service
 public class MainProcessService implements IProcessService {
-
-    @Autowired
-    @Qualifier("multithreadSpentCalc")
-    private ISpentCalc spentCalc;
-
-    @Autowired
-    FileUtil fileUtil;
 
     @Override
     public JSONObject process(JSONObject inputData) {
         JSONObject outputData = new JSONObject();
-        outputData.put("clientId", inputData.get("clientId"));
-        outputData.put("spentTotal", spentCalc.process((List) inputData.get("subscribers")));
-        outputData.put("isBig", BigClientChecker.isBigClient(inputData));
+
+        PackageBuilder packageBuilder = new PackageBuilder();
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("rules.drl");
+        Reader reader = new InputStreamReader(resourceAsStream);
+        try {
+            packageBuilder.addPackageFromDrl(reader);
+            org.drools.core.rule.Package rulesPackage = packageBuilder.getPackage();
+            RuleBase ruleBase = RuleBaseFactory.newRuleBase();
+            ruleBase.addPackage(rulesPackage);
+
+            WorkingMemory workingMemory = ruleBase.newStatefulSession();
+
+            Client client = new Client(inputData);
+
+            workingMemory.insert(client);
+            workingMemory.fireAllRules();
+
+            outputData = client.toJSONObject();
+        } catch (DroolsParserException e) {
+            log.error(e.toString());
+        } catch (IOException e) {
+            log.error(e.toString());
+        }
+
         return outputData;
     }
 
