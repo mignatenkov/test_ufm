@@ -2,7 +2,7 @@ application:
   inputFilesDir: input
   processedFilesDir: processed
   outputFilesDir: output
-  scheduler.interval: 10_000
+  scheduler.interval: 1000
 
 mongodb:
   host: localhost

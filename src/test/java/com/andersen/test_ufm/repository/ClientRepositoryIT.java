@@ -34,7 +34,7 @@ public class ClientRepositoryIT {
 
 
     private static DBCollection mongoCollection;
-    private ClientRepository clientRepository ;
+    private ClientDBRepository clientDBRepository;
 
     public ClientRepositoryIT() throws UnknownHostException {
     }
@@ -47,7 +47,7 @@ public class ClientRepositoryIT {
 
     @Before
     public void init() throws UnknownHostException {
-        clientRepository = new ClientRepository(mongoCollection);
+        clientDBRepository = new ClientDBRepository(mongoCollection);
     }
 
     @After
@@ -58,7 +58,7 @@ public class ClientRepositoryIT {
     @Test
     public void shouldCreateClient(){
         String clientId = "shouldCreateClientTest";
-        DBObject test = clientRepository.createClient(clientId, SPENT_TOTAL, BIG);
+        DBObject test = clientDBRepository.createClient(clientId, SPENT_TOTAL, BIG);
         DBObject client = mongoCollection.findOne(test);
         assertEquals(client, test);
     }
@@ -70,16 +70,16 @@ public class ClientRepositoryIT {
         if(repeatedObject != null){
             mongoCollection.remove(repeatedObject);
         }
-        clientRepository.createClient(temporaryId, SPENT_TOTAL, BIG);
+        clientDBRepository.createClient(temporaryId, SPENT_TOTAL, BIG);
         DBObject client = mongoCollection.findOne(new BasicDBObject("clientId", temporaryId));
-        DBObject test = clientRepository.findClientByClientId(temporaryId);
+        DBObject test = clientDBRepository.findClientByClientId(temporaryId);
         assertEquals(test, client);
     }
 
     @Test
     public void shouldGetAllClients(){
         List test = mongoCollection.find().toArray();
-        List clients = clientRepository.getAllClients();
+        List clients = clientDBRepository.getAllClients();
         assertEquals(test, clients);
     }
 

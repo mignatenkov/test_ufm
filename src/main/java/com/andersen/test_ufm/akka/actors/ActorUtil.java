@@ -1,7 +1,8 @@
 package com.andersen.test_ufm.akka.actors;
 
+import com.andersen.test_ufm.repository.ClientDBRepository;
+import com.andersen.test_ufm.repository.FileRepository;
 import com.andersen.test_ufm.service.IProcessService;
-import com.andersen.test_ufm.utils.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,7 +20,10 @@ import java.nio.file.Files;
 public class ActorUtil {
 
     @Autowired
-    private FileUtil fileUtil;
+    private FileRepository fileRepository;
+
+    @Autowired
+    private ClientDBRepository clientDBRepository;
 
     @Autowired
     private IProcessService processService;
@@ -27,19 +31,20 @@ public class ActorUtil {
     @Value("${application.processedFilesDir:processed}")
     private String processedFilesDir;
 
-    private JSONObject outputData;
-
     public void process(File inputFile) {
-        log.info("Start processing file ...");
+        log.debug("Start processing file ...");
         JSONObject inputData = parseFileToJSON(inputFile);
-        if(inputData != null){
+        JSONObject outputData = new JSONObject();
+        if (inputData != null){
             outputData = processService.process(inputData);
-            log.info("Result processing file: " + outputData.toString());
+            log.debug("Result processing file: " + outputData.toString());
         }
         File dest = new File(processedFilesDir + "/" + inputFile.getName());
-        fileUtil.copyFile(inputFile, dest);
-        fileUtil.deleteFile(inputFile);
-        fileUtil.createFile(inputFile.getName(),outputData);
+        fileRepository.copyFile(inputFile, dest);
+        fileRepository.deleteFile(inputFile);
+        fileRepository.createOutputFile(inputFile.getName(), outputData);
+
+        clientDBRepository.createClient(outputData);
     }
 
 
@@ -50,14 +55,14 @@ public class ActorUtil {
         try {
             content = new String(Files.readAllBytes(inputFile.toPath()));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
 
         JSONParser parser = new JSONParser();
         try {
             json = (JSONObject) parser.parse(content);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error(e.toString());
         }
 
         return json;

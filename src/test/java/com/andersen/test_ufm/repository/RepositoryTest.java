@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
  */
 public class RepositoryTest {
     private DBCollection dbCollection = Mockito.mock(DBCollection.class);
-    private ClientRepository repository = new ClientRepository(dbCollection);
+    private ClientDBRepository repository = new ClientDBRepository(dbCollection);
 
     @Test
     public void shouldGetAllClients() {

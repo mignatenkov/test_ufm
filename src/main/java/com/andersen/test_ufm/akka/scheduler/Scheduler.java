@@ -32,9 +32,9 @@ public class Scheduler {
 
     private int countActors;
 
-    @Scheduled(fixedDelayString = "${application.scheduler.interval:10_000}")
+    @Scheduled(fixedDelayString = "${application.scheduler.interval:1000}")
     public void performRegularAction() {
-        List<File> fileList = dataProvider.getListFile();
+        List<File> fileList = dataProvider.getListInputFiles();
         log.info("Count files in input folder: " + fileList.size());
 
         for (File item : fileList) {
@@ -48,7 +48,7 @@ public class Scheduler {
         ActorSystem system = context.getBean(ActorSystem.class);
         FileActorExtension fileActorExtension = context.getBean(FileActorExtension.class);
 
-        countActors = dataProvider.getListFile().size();
+        countActors = dataProvider.getListInputFiles().size();
         log.debug("Count actors: " + countActors);
 
         fileActor = system.actorOf(fileActorExtension
