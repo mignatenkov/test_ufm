@@ -1,6 +1,7 @@
-package com.andersen.test_ufm.service;
+package com.andersen.test_ufm.service.drools;
 
 import com.andersen.test_ufm.Application;
+import com.andersen.test_ufm.service.IProcessService;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import org.json.simple.JSONObject;

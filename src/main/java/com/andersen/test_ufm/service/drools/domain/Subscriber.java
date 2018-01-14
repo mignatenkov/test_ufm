@@ -1,4 +1,4 @@
-package com.andersen.test_ufm.domain;
+package com.andersen.test_ufm.service.drools.domain;
 
 import lombok.Data;
 import org.json.simple.JSONObject;

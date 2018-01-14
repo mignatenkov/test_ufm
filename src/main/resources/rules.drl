@@ -1,8 +1,8 @@
 package drools.process
 
 import java.math.BigDecimal;
-import com.andersen.test_ufm.domain.Client
-import com.andersen.test_ufm.domain.Subscriber
+import com.andersen.test_ufm.service.drools.domain.Client
+import com.andersen.test_ufm.service.drools.domain.Subscriber
 
 dialect "java"
 rule "Convert input file to output file"

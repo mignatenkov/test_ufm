@@ -19,9 +19,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by abraxas on 10.01.2018.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class, loader = AnnotationConfigContextLoader.class)
 public class ClientRepositoryIT {

@@ -13,9 +13,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by abraxas on 11.01.2018.
- */
 public class RepositoryTest {
     private DBCollection dbCollection = Mockito.mock(DBCollection.class);
     private ClientDBRepository repository = new ClientDBRepository(dbCollection);

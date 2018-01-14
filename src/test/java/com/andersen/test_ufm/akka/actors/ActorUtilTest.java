@@ -18,9 +18,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 
-/**
- * Created by abraxas on 13.01.2018.
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ActorUtilTest {
 
@@ -57,7 +54,7 @@ public class ActorUtilTest {
         verify(processService).process(Mockito.any(JSONObject.class));
         ArgumentCaptor<File> destFileCaptor = ArgumentCaptor.forClass(File.class);
         verify(fileRepository).copyFile(eq(file), destFileCaptor.capture());
-        Assert.assertEquals(TEST_DIR + "/test.json", destFileCaptor.getValue().getPath());
+        Assert.assertEquals(TEST_DIR + File.separator + "test.json", destFileCaptor.getValue().getPath());
         verify(fileRepository).deleteFile(file);
         verify(fileRepository).createOutputFile(file.getName(), jsonObject);
         verify(clientDBRepository).createClient(jsonObject);
@@ -75,7 +72,7 @@ public class ActorUtilTest {
 
         ArgumentCaptor<File> destFileCaptor = ArgumentCaptor.forClass(File.class);
         verify(fileRepository).copyFile(eq(file), destFileCaptor.capture());
-        Assert.assertEquals(TEST_DIR + "/README.md", destFileCaptor.getValue().getPath());
+        Assert.assertEquals(TEST_DIR + File.separator + "README.md", destFileCaptor.getValue().getPath());
         verify(fileRepository).deleteFile(file);
         verify(fileRepository).createOutputFile(eq(file.getName()), eq(emptyJson));
         verify(clientDBRepository).createClient(eq(emptyJson));

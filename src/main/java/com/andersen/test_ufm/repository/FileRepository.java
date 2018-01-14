@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Класс реализующией методы доступа к данным
+ * Класс реализующией методы доступа к файлам
  */
 @Slf4j
 @Repository
@@ -84,7 +84,7 @@ public class FileRepository {
     }
 
     public void createOutputFile(String fileName, JSONObject obj){
-        try (FileWriter file = new FileWriter(outputFilesDir + "/" + fileName)) {
+        try (FileWriter file = new FileWriter(outputFilesDir + File.separator + fileName)) {
             file.write(obj.toJSONString());
         } catch (IOException e) {
             log.error("Error while creating file. Error: " + e.getMessage());
