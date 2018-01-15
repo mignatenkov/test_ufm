@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -56,6 +57,18 @@ public class ClientRepositoryIT {
     public void shouldCreateClient(){
         String clientId = "shouldCreateClientTest";
         DBObject test = clientDBRepository.createClient(clientId, SPENT_TOTAL, BIG);
+        DBObject client = mongoCollection.findOne(test);
+        assertEquals(client, test);
+    }
+
+    @Test
+    public void shouldCreateClientFromJSON(){
+        String clientId = "shouldCreateClientFromJSONTest";
+        JSONObject clientJSON = new JSONObject();
+        clientJSON.put("clientId", clientId);
+        clientJSON.put("spentTotal", SPENT_TOTAL);
+        clientJSON.put("isBig", BIG);
+        DBObject test = clientDBRepository.createClient(clientJSON);
         DBObject client = mongoCollection.findOne(test);
         assertEquals(client, test);
     }
