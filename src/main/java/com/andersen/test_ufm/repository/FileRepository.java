@@ -1,5 +1,6 @@
 package com.andersen.test_ufm.repository;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,12 +24,15 @@ import java.util.List;
 public class FileRepository {
 
     @Value("${application.inputFilesDir:input}")
+    @Getter
     private String inputFilesDir;
 
     @Value("${application.processedFilesDir:processed}")
+    @Getter
     private String processedFilesDir;
 
     @Value("${application.outputFilesDir:output}")
+    @Getter
     private String outputFilesDir;
 
     private File fileInputFilesDir;
@@ -63,23 +68,15 @@ public class FileRepository {
         return list;
     }
 
-    public void copyFile(File source, File dest){
-        try {
-            if (!dest.exists()){
-                Files.copy(source.toPath(), dest.toPath());
-            } else {
-                log.error("File " + source.getName() + " already exists. Copying file stopped.");
-            }
-        } catch (IOException e) {
-            log.error("Error while coping the file: " + source.getName() + ". Error: " + e.getMessage());
+    public void moveFile(File source, File dest){
+        if (source == null) {
+            log.error("File " + source.getName() + " is null. Moving file stopped.");
+            return;
         }
-    }
-
-    public void deleteFile(File file){
         try {
-            Files.delete(file.toPath());
+            Files.move(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            log.error("Error while deleting the file: " + file.getName() + ". Error: " + e.getMessage());
+            log.error("Error while moving the file: " + source.getName() + ". Error: " + e.toString());
         }
     }
 

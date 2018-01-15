@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -28,21 +27,24 @@ public class ActorUtil {
     @Autowired
     private IProcessService processService;
 
-    @Value("${application.processedFilesDir:processed}")
-    private String processedFilesDir;
-
     public void process(File inputFile) {
-        log.debug("Start processing file ...");
-        JSONObject inputData = parseFileToJSON(inputFile);
+        if (inputFile == null) {
+            log.error("Input file is null!");
+            return;
+        }
+        String inputFileName = inputFile.getName();
+        log.debug("Start processing file " + inputFileName);
+        File processedFile = new File(fileRepository.getProcessedFilesDir() + File.separator + inputFileName);
+
+        fileRepository.moveFile(inputFile, processedFile);
+
+        JSONObject inputData = parseFileToJSON(processedFile);
         JSONObject outputData = new JSONObject();
         if (inputData != null){
             outputData = processService.process(inputData);
             log.debug("Result processing file: " + outputData.toString());
         }
-        File dest = new File(processedFilesDir + "/" + inputFile.getName());
-        fileRepository.copyFile(inputFile, dest);
-        fileRepository.deleteFile(inputFile);
-        fileRepository.createOutputFile(inputFile.getName(), outputData);
+        fileRepository.createOutputFile(inputFileName, outputData);
 
         clientDBRepository.createClient(outputData);
     }

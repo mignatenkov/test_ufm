@@ -44,7 +44,9 @@ public class ClientDBRepository {
     }
 
     public DBObject createClient(JSONObject data) {
-        mongoCollection.save((DBObject) data);
+        DBObject inputDbObject = new BasicDBObject ();
+        inputDbObject.putAll(data);
+        mongoCollection.save(inputDbObject);
         return mongoCollection.findOne(data);
     }
 
