@@ -35,19 +35,27 @@ public class ClientDBRepository {
     }
 
     public DBObject createClient(String clientId, String spentTotal, Boolean isBig) {
-        DBObject newUser = new BasicDBObject();
-        newUser.put("clientId", clientId);
-        newUser.put("spentTotal", spentTotal);
-        newUser.put("isBig", isBig);
-        mongoCollection.save(newUser);
-        return mongoCollection.findOne(newUser);
+        DBObject inputDbObject = new BasicDBObject();
+        inputDbObject.put("clientId", clientId);
+        inputDbObject.put("spentTotal", spentTotal);
+        inputDbObject.put("isBig", isBig);
+        return this.createClient(inputDbObject);
     }
 
     public DBObject createClient(JSONObject data) {
         DBObject inputDbObject = new BasicDBObject ();
         inputDbObject.putAll(data);
-        mongoCollection.save(inputDbObject);
-        return mongoCollection.findOne(data);
+        return this.createClient(inputDbObject);
+    }
+
+    public DBObject createClient(DBObject data) {
+        DBObject searchCriteria = new BasicDBObject("clientId", data.get("clientId"));
+        DBObject existingDocument = mongoCollection.findOne(searchCriteria);
+        if (existingDocument != null) {
+            data.put("_id", existingDocument.get("_id"));
+        }
+        mongoCollection.save(data);
+        return mongoCollection.findOne(searchCriteria);
     }
 
     public DBObject findClientByClientId(String clientId) {

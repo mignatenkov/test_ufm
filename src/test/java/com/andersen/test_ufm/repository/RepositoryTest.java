@@ -10,8 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RepositoryTest {
     private DBCollection dbCollection = Mockito.mock(DBCollection.class);
@@ -44,7 +43,7 @@ public class RepositoryTest {
         DBObject test = repository.createClient("shouldCreateClientId", "spent", true);
 
         verify(dbCollection).save(Mockito.any());
-        verify(dbCollection).findOne(Mockito.any());
+        verify(dbCollection, atLeast(1)).findOne(Mockito.any());
 
         assertNotNull(test);
     }
