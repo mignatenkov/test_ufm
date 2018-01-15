@@ -71,7 +71,7 @@ public class FileRepository {
 
     public void moveFile(File source, File dest) throws NoSuchFileException {
         if (source == null) {
-            log.error("File " + String.valueOf(source.getName()) + " is null. Moving file stopped.");
+            log.error("Source file is null. Moving file stopped.");
             return;
         }
         try {
