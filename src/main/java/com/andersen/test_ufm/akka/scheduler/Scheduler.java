@@ -7,6 +7,7 @@ import com.andersen.test_ufm.akka.extention.FileActorExtension;
 import com.andersen.test_ufm.repository.FileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class Scheduler {
 
     private ActorRef fileActor;
 
+    @Value("${application.scheduler.countActors:20}")
     private int countActors;
 
     @Scheduled(fixedDelayString = "${application.scheduler.interval:1000}")
@@ -48,7 +50,6 @@ public class Scheduler {
         ActorSystem system = context.getBean(ActorSystem.class);
         FileActorExtension fileActorExtension = context.getBean(FileActorExtension.class);
 
-        countActors = dataProvider.getListInputFiles().size();
         log.debug("Count actors: " + countActors);
 
         fileActor = system.actorOf(fileActorExtension

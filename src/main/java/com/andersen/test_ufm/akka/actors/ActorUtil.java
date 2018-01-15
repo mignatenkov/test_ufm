@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 
 @Slf4j
 @Component
@@ -36,7 +37,12 @@ public class ActorUtil {
         log.debug("Start processing file " + inputFileName);
         File processedFile = new File(fileRepository.getProcessedFilesDir() + File.separator + inputFileName);
 
-        fileRepository.moveFile(inputFile, processedFile);
+        try {
+            fileRepository.moveFile(inputFile, processedFile);
+        } catch (NoSuchFileException nsfe) {
+            log.info("Input file " + inputFileName + " had been already processed by other actor. Breaking processing...");
+            return;
+        }
 
         JSONObject inputData = parseFileToJSON(processedFile);
         JSONObject outputData = new JSONObject();

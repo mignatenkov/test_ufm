@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ public class FileRepository {
         }
     }
 
-    public List<File> getListInputFiles(){
+    public List<File> getListInputFiles() {
         File[] files = fileInputFilesDir.listFiles();
         List<File> list;
         if (files != null) {
@@ -68,19 +69,21 @@ public class FileRepository {
         return list;
     }
 
-    public void moveFile(File source, File dest){
+    public void moveFile(File source, File dest) throws NoSuchFileException {
         if (source == null) {
             log.error("File " + source.getName() + " is null. Moving file stopped.");
             return;
         }
         try {
             Files.move(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (NoSuchFileException nsfe) {
+            throw nsfe;
         } catch (IOException e) {
             log.error("Error while moving the file: " + source.getName() + ". Error: " + e.toString());
         }
     }
 
-    public void createOutputFile(String fileName, JSONObject obj){
+    public void createOutputFile(String fileName, JSONObject obj) {
         try (FileWriter file = new FileWriter(outputFilesDir + File.separator + fileName)) {
             file.write(obj.toJSONString());
         } catch (IOException e) {

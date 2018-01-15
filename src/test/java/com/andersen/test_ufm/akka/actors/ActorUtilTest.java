@@ -13,6 +13,8 @@ import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
+import java.nio.file.NoSuchFileException;
+
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
@@ -44,7 +46,7 @@ public class ActorUtilTest {
 
 
     @Test
-    public void shouldProcessSuccessfully(){
+    public void shouldProcessSuccessfully() throws NoSuchFileException {
         when(fileRepository.getInputFilesDir()).thenReturn(TEST_INPUT_DIR);
         when(fileRepository.getProcessedFilesDir()).thenReturn(TEST_PROCESSED_DIR);
         when(fileRepository.getOutputFilesDir()).thenReturn(TEST_OUTPUT_DIR);
@@ -66,7 +68,7 @@ public class ActorUtilTest {
     }
 
     @Test
-    public void shouldNotProcessNonJSONFile(){
+    public void shouldNotProcessNonJSONFile() throws NoSuchFileException {
         when(fileRepository.getInputFilesDir()).thenReturn(TEST_INPUT_DIR);
         when(fileRepository.getProcessedFilesDir()).thenReturn(TEST_PROCESSED_DIR);
         when(fileRepository.getOutputFilesDir()).thenReturn(TEST_OUTPUT_DIR);
