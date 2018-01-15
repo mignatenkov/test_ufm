@@ -69,7 +69,7 @@ public class ClientRepositoryIT {
         clientJSON.put("spentTotal", SPENT_TOTAL);
         clientJSON.put("isBig", BIG);
         DBObject test = clientDBRepository.createClient(clientJSON);
-        DBObject client = mongoCollection.findOne(test);
+        DBObject client = mongoCollection.findOne(clientJSON);
         assertEquals(client, test);
     }
 
