@@ -49,6 +49,9 @@ public class ClientDBRepository {
     }
 
     public DBObject createClient(DBObject data) {
+        if (data == null) {
+            return new BasicDBObject();
+        }
         DBObject searchCriteria = new BasicDBObject("clientId", data.get("clientId"));
         DBObject existingDocument = mongoCollection.findOne(searchCriteria);
         if (existingDocument != null) {
