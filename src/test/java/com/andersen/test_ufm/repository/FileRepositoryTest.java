@@ -57,12 +57,6 @@ public class FileRepositoryTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldThrowNPE() throws NoSuchFileException {
-        File secondFile = new File(OUTPUT_FILES_DIR + File.separator + "input/test.json");
-        repository.moveFile(null, secondFile);
-    }
-
     @Test(expected = java.nio.file.NoSuchFileException.class)
     public void shouldThrowNoSuchFileException() throws NoSuchFileException {
         File firstFile = new File("input/test.json");
